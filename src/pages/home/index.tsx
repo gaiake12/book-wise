@@ -1,41 +1,69 @@
-import Image from 'next/image'
-import bookWiseLogo from '@/../../assets/book-wise-logo.png'
-import { ChartLineUp, Binoculars, SignIn } from 'phosphor-react'
+import BookRatingCard from '@/components/bookRatingCard'
+import BookRatingSmallCard from '@/components/bookRatingSmallCard'
+import SideBar from '@/components/sideBar'
+import Link from 'next/link'
+import { ChartLineUp, CaretRight } from 'phosphor-react'
 
 export default function Home() {
   return (
-    <div className="w-scren h-screen p-4">
-      <div className="h-full w-56  from-gray-700 to-gradient-to rounded-md bg-gradient-to-t flex flex-col items-center p-8">
-        <Image
-          src={bookWiseLogo}
-          width={128}
-          height={32}
-          alt="book wise logo"
-        />
+    <div className="flex">
+      <SideBar activePage="home" logedIn={false} />
 
-        <div className="flex flex-col gap-6 text-gray-400 mt-20">
-          <button>
-            <span className="flex justify-start item-center gap-2">
-              <ChartLineUp size={32} />
-              Início
-            </span>
-          </button>
+      <div className="p-16">
+        <h1 className="text-gray-100 text-2xl flex gap-2 items-center mb-10">
+          <ChartLineUp size={32} className="text-green-100" />
+          Início
+        </h1>
 
-          <button>
-            <span className="flex justify-start items-center gap-2">
-              <Binoculars size={32} />
-              Explorar
-            </span>
-          </button>
+        <span className="text-gray-100 mb-4 flex">
+          Avaliações mais recentes
+        </span>
+
+        <div className="flex flex-col gap-3 w-[42.5rem] overflow-hidden">
+          <BookRatingCard />
+          <BookRatingCard />
+          <BookRatingCard />
+          <BookRatingCard />
+          <BookRatingCard />
+          <BookRatingCard />
+          <BookRatingCard />
         </div>
-
-        <button className="mt-auto">
-          <span className="flex text-gray-100 gap-3 items-center">
-            Fazer login <SignIn className="text-green-100" size={20} />
-          </span>
-        </button>
       </div>
-      <div className="">col2</div>
+
+      <div className="flex mt-36 flex-col w-80 gap-6">
+        <header className="flex items-center justify-between">
+          <span className="text-gray-100 text-sm">Livros Populares</span>
+          <Link
+            className="text-purple-100 flex gap-1 items-center justify-center text-sm font-bold"
+            href="/explore"
+          >
+            Ver todos <CaretRight />
+          </Link>
+        </header>
+
+        <div className="flex flex-col gap-3">
+          <BookRatingSmallCard
+            cardHeight={8.125}
+            imageHeight={94}
+            imageWidth={64}
+          />
+          <BookRatingSmallCard
+            cardHeight={8.125}
+            imageHeight={94}
+            imageWidth={64}
+          />
+          <BookRatingSmallCard
+            cardHeight={8.125}
+            imageHeight={94}
+            imageWidth={64}
+          />
+          <BookRatingSmallCard
+            cardHeight={8.125}
+            imageHeight={94}
+            imageWidth={64}
+          />
+        </div>
+      </div>
     </div>
   )
 }

@@ -28,10 +28,6 @@ const config: Config = {
       'gradient-to': '#9694F5',
     },
 
-    bgGradientDeg: {
-      180: '180deg',
-    },
-
     // fontSize: {
     //   sm: '0.75rem',
     //   reg: '1rem',
@@ -43,14 +39,6 @@ const config: Config = {
     lineHeight: {
       reg: '140%',
       lg: '160%',
-    },
-
-    extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
     },
   },
   plugins: [],
