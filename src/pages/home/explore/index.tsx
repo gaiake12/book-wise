@@ -1,4 +1,4 @@
-import BookRatingSmallCard from '@/components/bookRatingSmallCard'
+import BookRatingExploreCard from '@/components/bookRatingExploreCard'
 import FilterButton from '@/components/filterButton'
 import SideBar from '@/components/sideBar'
 import { Binoculars, MagnifyingGlass } from 'phosphor-react'
@@ -27,6 +27,7 @@ export default function Explore() {
 
         <div className="flex my-10 gap-3">
           <FilterButton displayText="Tudo" />
+
           <FilterButton displayText="Computação" />
           <FilterButton displayText="Educação" />
           <FilterButton displayText="Fantasia" />
@@ -37,51 +38,15 @@ export default function Explore() {
         </div>
 
         <div className="grid w-[62.25rem] grid-cols-3 gap-5 border-collapse">
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
-          <BookRatingSmallCard
-            cardHeight={11.5}
-            imageHeight={108}
-            imageWidth={152}
-          />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
+          <BookRatingExploreCard />
         </div>
       </div>
     </div>

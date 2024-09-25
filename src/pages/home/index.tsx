@@ -42,26 +42,10 @@ export default function Home() {
         </header>
 
         <div className="flex flex-col gap-3">
-          <BookRatingSmallCard
-            cardHeight={8.125}
-            imageHeight={94}
-            imageWidth={64}
-          />
-          <BookRatingSmallCard
-            cardHeight={8.125}
-            imageHeight={94}
-            imageWidth={64}
-          />
-          <BookRatingSmallCard
-            cardHeight={8.125}
-            imageHeight={94}
-            imageWidth={64}
-          />
-          <BookRatingSmallCard
-            cardHeight={8.125}
-            imageHeight={94}
-            imageWidth={64}
-          />
+          <BookRatingSmallCard />
+          <BookRatingSmallCard />
+          <BookRatingSmallCard />
+          <BookRatingSmallCard />
         </div>
       </div>
     </div>
