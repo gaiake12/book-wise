@@ -11,7 +11,7 @@ import { LoginAlert } from './loginAlert'
 export default function BookRatingExploreCard() {
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger asChild>
         <button>
           <div className="w-80 h-[11.5rem] bg-gray-700 rounded-md pt-4 pb-4 pl-5 pr-5 flex gap-5 m-auto">
             <Image src={oHobbit} width={108} height={152} alt="book cover" />
@@ -39,7 +39,7 @@ export default function BookRatingExploreCard() {
         <div className="flex w-full justify-between items-center mt-10 text-gray-200">
           <span>Avaliações</span>
           <Dialog>
-            <DialogTrigger>
+            <DialogTrigger asChild>
               <button className="text-purple-100 font-semibold">Avaliar</button>
             </DialogTrigger>
             <LoginAlert />
