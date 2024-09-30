@@ -2,8 +2,26 @@ import BookRatingExploreCard from '@/components/bookRatingExploreCard'
 import FilterButton from '@/components/filterButton'
 import SideBar from '@/components/sideBar'
 import { Binoculars, MagnifyingGlass } from 'phosphor-react'
+import { api } from '@/lib/axios'
+import { useEffect, useState } from 'react'
+
+interface Book {
+  author: string
+  summary: string
+  name: string
+  totalPages: number
+  coverUrl: string
+}
 
 export default function Explore() {
+  const [bookList, setBookList] = useState<Book[]>([])
+
+  useEffect(() => {
+    api.get('/books').then((response) => {
+      setBookList(response.data)
+    })
+  }, [])
+
   return (
     <div className="flex">
       <SideBar activePage="explore" logedIn={false} />
@@ -38,15 +56,14 @@ export default function Explore() {
         </div>
 
         <div className="grid w-[62.25rem] grid-cols-3 gap-5 border-collapse">
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
-          <BookRatingExploreCard />
+          {bookList.map((book) => (
+            <BookRatingExploreCard
+              key={book.name}
+              author={book.author}
+              name={book.name}
+              coverUrl={book.coverUrl}
+            />
+          ))}
         </div>
       </div>
     </div>

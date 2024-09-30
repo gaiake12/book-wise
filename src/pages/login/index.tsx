@@ -3,10 +3,9 @@ import bookWisePresentation from '../../../assets/book-wise-presentation.png'
 import googleIcon from '@/../../assets/google-icon.svg'
 import githubIcon from '@/../../assets/github-icon.svg'
 import rocketIcon from '@/../../assets/rocket-icon.svg'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 
 export default function Login() {
-  const { data: session } = useSession()
   return (
     <div className="flex justify-center items-center p-4 overflow-hidden ">
       <div>
