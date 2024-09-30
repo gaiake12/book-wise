@@ -1,26 +1,26 @@
 import { Adapter } from 'next-auth/adapters'
 import { prisma } from '../prisma'
 
-export  function PrismaAdapter(): Adapter {
+export function PrismaAdapter(): Adapter {
   return {
     async createUser(user) {
-     const createdUser =  await prisma.user.create({
+      const createdUser = await prisma.user.create({
         data: {
           name: user.name,
           avatar_url: user.avatar_url,
           email: user.email,
-        }
+        },
       })
 
       return {
-        ...createdUser
+        ...createdUser,
       }
     },
     async getUser(id) {
       const user = await prisma.user.findUnique({
         where: {
           id,
-        }
+        },
       })
 
       if (!user) {
@@ -28,14 +28,14 @@ export  function PrismaAdapter(): Adapter {
       }
 
       return {
-        ...user
+        ...user,
       }
     },
     async getUserByEmail(email) {
       const user = await prisma.user.findUnique({
         where: {
           email,
-        }
+        },
       })
 
       if (!user) {
@@ -43,7 +43,7 @@ export  function PrismaAdapter(): Adapter {
       }
 
       return {
-        ...user
+        ...user,
       }
     },
     async getUserByAccount({ providerAccountId, provider }) {
@@ -51,12 +51,12 @@ export  function PrismaAdapter(): Adapter {
         where: {
           provider_provider_account_id: {
             provider,
-            provider_account_id: providerAccountId
-          }
+            provider_account_id: providerAccountId,
+          },
         },
         include: {
-          user: true
-        }
+          user: true,
+        },
       })
 
       if (!account) {
@@ -66,21 +66,20 @@ export  function PrismaAdapter(): Adapter {
       const { user } = account
 
       return {
-          ...user
+        ...user,
       }
     },
     async updateUser(user) {
       const updatedUser = await prisma.user.update({
         where: {
-          id: user.id
+          id: user.id,
         },
         data: {
           name: user.name,
           email: user.email,
-          avatar_url: user.avatar_url
-        }
+          avatar_url: user.avatar_url,
+        },
       })
-
     },
 
     async linkAccount(account) {
@@ -100,7 +99,7 @@ export  function PrismaAdapter(): Adapter {
         },
       })
     },
-  
+
     async createSession({ sessionToken, userId, expires }) {
       await prisma.session.create({
         data: {
@@ -173,6 +172,5 @@ export  function PrismaAdapter(): Adapter {
         },
       })
     },
-
   }
 }
