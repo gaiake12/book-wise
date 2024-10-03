@@ -5,26 +5,33 @@ import { Binoculars, MagnifyingGlass } from 'phosphor-react'
 import { api } from '@/lib/axios'
 import { useEffect, useState } from 'react'
 
+interface Rating {
+  rate: number
+  description: string
+}
+
 interface Book {
+  id: string
   author: string
   summary: string
   name: string
   totalPages: number
   coverUrl: string
+  ratings: Rating[]
 }
 
 export default function Explore() {
   const [bookList, setBookList] = useState<Book[]>([])
 
   useEffect(() => {
-    api.get('/books').then((response) => {
+    api.get('/books/getBooks').then((response) => {
       setBookList(response.data)
     })
   }, [])
 
   return (
     <div className="flex">
-      <SideBar activePage="explore" logedIn={false} />
+      <SideBar activePage="explore" />
       <div className="mt-16 px-12">
         <div className="flex justify-between w-full">
           <h1 className="text-gray-100 text-2xl flex gap-2 items-center mb-10">
@@ -58,10 +65,12 @@ export default function Explore() {
         <div className="grid w-[62.25rem] grid-cols-3 gap-5 border-collapse">
           {bookList.map((book) => (
             <BookRatingExploreCard
-              key={book.name}
+              key={book.id}
+              id={book.id}
               author={book.author}
               name={book.name}
               coverUrl={book.coverUrl}
+              ratings={book.ratings}
             />
           ))}
         </div>

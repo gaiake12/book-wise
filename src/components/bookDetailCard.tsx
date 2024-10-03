@@ -1,17 +1,50 @@
 import Image from 'next/image'
 import oHobbit from '@/../../assets/o-hobbit.png'
 import { Star, BookmarkSimple, BookOpen } from 'phosphor-react'
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/axios'
 
-export function BookDetailCard() {
+interface BookDetailCardProps {
+  bookId: string
+}
+
+interface Book {
+  id: string
+  author: string
+  summary: string
+  name: string
+  totalPages: number
+  coverUrl: string
+}
+
+export function BookDetailCard({ bookId }: BookDetailCardProps) {
+  const [book, setBook] = useState<Book>()
+
+  useEffect(() => {
+    api
+      .get('/books/getBook', {
+        params: { bookId },
+      })
+      .then((response) => {
+        console.log(response.data)
+        setBook(response.data)
+      })
+  }, [])
+
   return (
     <div className="w-full h-[25.875rem] bg-gray-700 px-8 py-6 rounded-md">
       <div className="w-full h-60 rounded-md flex gap-5 m-auto">
-        <Image src={oHobbit} width={171} height={242} alt="book corver" />
+        <Image
+          src={String(book?.coverUrl) && ''}
+          width={171}
+          height={242}
+          alt="book corver"
+        />
         <div className="flex flex-col items-start gap-2">
           <span className="text-gray-100 text-lg font-semibold text-left">
-            14 Hábitos de Desenvolvedores Altamente Produtivos
+            {book?.name}
           </span>
-          <span className="text-gray-400">George Orwell</span>
+          <span className="text-gray-400">{book?.author}</span>
 
           <div className="flex justify-start items-center text-purple-100 gap-1 mt-auto">
             <Star size={16} />

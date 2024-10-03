@@ -6,17 +6,44 @@ import { RatingCard } from './ratingCard'
 import { Dialog, DialogTrigger } from './ui/dialog'
 import { LoginAlert } from './loginAlert'
 
+interface Rating {
+  rate: number
+  description: string
+}
+
 interface BookRatingExploreCardProps {
+  id: string
   author: string
   name: string
   coverUrl: string
+  ratings: Rating[]
 }
 
 export default function BookRatingExploreCard({
+  id,
   author,
   name,
   coverUrl,
+  ratings,
 }: BookRatingExploreCardProps) {
+  function calculateAvarageRating() {
+    const avarageRating = Math.floor(
+      ratings.reduce((acc, rating) => acc + rating.rate, 0) / ratings.length,
+    )
+
+    const stars = []
+
+    for (let i = 1; i < 6; i++) {
+      if (i <= avarageRating) {
+        stars.push(<Star key={i} size={16} weight="fill" />)
+      } else {
+        stars.push(<Star key={i} size={16} />)
+      }
+    }
+
+    return stars
+  }
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -28,11 +55,7 @@ export default function BookRatingExploreCard({
               <span className="text-gray-400">{author}</span>
 
               <div className="flex justify-start items-center text-purple-100 gap-1 mt-auto">
-                <Star size={16} />
-                <Star size={16} />
-                <Star size={16} />
-                <Star size={16} />
-                <Star size={16} />
+                {calculateAvarageRating()}
               </div>
             </div>
           </div>
@@ -40,7 +63,7 @@ export default function BookRatingExploreCard({
       </SheetTrigger>
 
       <SheetContent className="bg-gray-800 max-w-[41.25rem] border-none overflow-y-auto px-12">
-        <BookDetailCard />
+        <BookDetailCard bookId={id} />
 
         <div className="flex w-full justify-between items-center mt-10 text-gray-200">
           <span>Avaliações</span>

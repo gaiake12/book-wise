@@ -7,7 +7,7 @@ import { ChartLineUp, CaretRight } from 'phosphor-react'
 export default function Home() {
   return (
     <div className="flex">
-      <SideBar activePage="home" logedIn={false} />
+      <SideBar activePage="home" />
 
       <div className="p-16">
         <h1 className="text-gray-100 text-2xl flex gap-2 items-center mb-10">
