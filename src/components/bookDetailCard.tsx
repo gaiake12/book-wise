@@ -1,11 +1,16 @@
 import Image from 'next/image'
-import oHobbit from '@/../../assets/o-hobbit.png'
 import { Star, BookmarkSimple, BookOpen } from 'phosphor-react'
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/axios'
+import UseCalcAverageRating from '@/hooks/useCalcAvarageRating'
 
 interface BookDetailCardProps {
   bookId: string
+}
+
+interface Rating {
+  rate: number
+  description: string
 }
 
 interface Book {
@@ -15,6 +20,9 @@ interface Book {
   name: string
   totalPages: number
   coverUrl: string
+  primaryCategory: string
+  secondaryCategory: string
+  ratings: Rating[]
 }
 
 export function BookDetailCard({ bookId }: BookDetailCardProps) {
@@ -29,13 +37,13 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
         console.log(response.data)
         setBook(response.data)
       })
-  }, [])
+  }, [bookId])
 
   return (
     <div className="w-full h-[25.875rem] bg-gray-700 px-8 py-6 rounded-md">
       <div className="w-full h-60 rounded-md flex gap-5 m-auto">
         <Image
-          src={String(book?.coverUrl) && ''}
+          src={book?.coverUrl ? book.coverUrl : ''}
           width={171}
           height={242}
           alt="book corver"
@@ -47,13 +55,11 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
           <span className="text-gray-400">{book?.author}</span>
 
           <div className="flex justify-start items-center text-purple-100 gap-1 mt-auto">
-            <Star size={16} />
-            <Star size={16} />
-            <Star size={16} />
-            <Star size={16} />
-            <Star size={16} />
+            {book?.ratings ? UseCalcAverageRating(book.ratings) : ''}
           </div>
-          <span className="text-gray-400 text-sm">3 avaliações</span>
+          <span className="text-gray-400 text-sm">
+            {book?.ratings.length} avaliações
+          </span>
         </div>
       </div>
 
@@ -62,7 +68,9 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
           <BookmarkSimple size={24} className="text-green-100" />
           <div className="flex flex-col ">
             <p className="text-sm text-gray-400">Categoria</p>
-            <span className="font-semibold">Computação, educação</span>
+            <span className="font-semibold">
+              {book?.primaryCategory}, {book?.secondaryCategory}
+            </span>
           </div>
         </div>
 
@@ -70,7 +78,7 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
           <BookOpen size={24} className="text-green-100" />
           <div className="flex flex-col ">
             <p className="text-sm text-gray-400">Páginas</p>
-            <span className="font-semibold">160</span>
+            <span className="font-semibold">{book?.totalPages}</span>
           </div>
         </div>
       </div>

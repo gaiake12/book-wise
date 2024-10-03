@@ -5,6 +5,7 @@ import { BookDetailCard } from './bookDetailCard'
 import { RatingCard } from './ratingCard'
 import { Dialog, DialogTrigger } from './ui/dialog'
 import { LoginAlert } from './loginAlert'
+import UseCalcAverageRating from '@/hooks/useCalcAvarageRating'
 
 interface Rating {
   rate: number
@@ -26,24 +27,6 @@ export default function BookRatingExploreCard({
   coverUrl,
   ratings,
 }: BookRatingExploreCardProps) {
-  function calculateAvarageRating() {
-    const avarageRating = Math.floor(
-      ratings.reduce((acc, rating) => acc + rating.rate, 0) / ratings.length,
-    )
-
-    const stars = []
-
-    for (let i = 1; i < 6; i++) {
-      if (i <= avarageRating) {
-        stars.push(<Star key={i} size={16} weight="fill" />)
-      } else {
-        stars.push(<Star key={i} size={16} />)
-      }
-    }
-
-    return stars
-  }
-
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -55,7 +38,7 @@ export default function BookRatingExploreCard({
               <span className="text-gray-400">{author}</span>
 
               <div className="flex justify-start items-center text-purple-100 gap-1 mt-auto">
-                {calculateAvarageRating()}
+                {UseCalcAverageRating(ratings)}
               </div>
             </div>
           </div>
