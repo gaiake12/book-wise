@@ -1,10 +1,42 @@
 import BookRatingCard from '@/components/bookRatingCard'
 import BookRatingSmallCard from '@/components/bookRatingSmallCard'
 import SideBar from '@/components/sideBar'
+import { api } from '@/lib/axios'
 import Link from 'next/link'
 import { ChartLineUp, CaretRight } from 'phosphor-react'
+import { useEffect, useState } from 'react'
+
+interface User {
+  id: string
+  name: string
+  avatarUrl: string
+}
+
+interface Book {
+  name: string
+  author: string
+  summary: string
+  coverUrl: string
+}
+
+interface Rating {
+  id: string
+  rate: number
+  createdAt: string
+  book: Book
+  user: User
+}
 
 export default function Home() {
+  const [mostRecentRatings, setMostRecentRatings] = useState<Rating[]>()
+
+  useEffect(() => {
+    api.get('/rating/getMostRecentRatings').then((response) => {
+      console.log(response.data)
+      setMostRecentRatings(response.data)
+    })
+  }, [])
+
   return (
     <div className="flex">
       <SideBar activePage="home" />
@@ -20,13 +52,9 @@ export default function Home() {
         </span>
 
         <div className="flex flex-col gap-3 w-[42.5rem] overflow-hidden">
-          <BookRatingCard />
-          <BookRatingCard />
-          <BookRatingCard />
-          <BookRatingCard />
-          <BookRatingCard />
-          <BookRatingCard />
-          <BookRatingCard />
+          {mostRecentRatings?.map((rating) => {
+            return <BookRatingCard key={rating.id} rating={rating} />
+          })}
         </div>
       </div>
 

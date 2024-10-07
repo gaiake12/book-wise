@@ -47,7 +47,7 @@ export default function SideBar({ activePage }: SideBarProps) {
               <div className="w-1 h-7 bg-gradient-to-b from-gradient-from to-gradient-to rounded-lg ml-[-1rem] mr-3" />
             )}
             <Link
-              href="home/explore"
+              href="/explore"
               className="flex justify-start items-center gap-2"
             >
               <Binoculars size={32} />
@@ -61,7 +61,7 @@ export default function SideBar({ activePage }: SideBarProps) {
             )}
             {isSignedIn && (
               <Link
-                href="home/profile"
+                href="/profile"
                 className="flex justify-start items-center gap-2"
               >
                 <User size={32} />

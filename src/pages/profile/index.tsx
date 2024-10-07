@@ -14,7 +14,7 @@ import {
 export default function Profile() {
   return (
     <div className="flex">
-      <SideBar activePage="profile" logedIn={false} />
+      <SideBar activePage="profile" />
 
       <div className="p-16">
         <h1 className="text-gray-100 text-2xl flex gap-2 items-center mb-10">

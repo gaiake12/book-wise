@@ -1,6 +1,10 @@
 import { Star } from 'phosphor-react'
 
-export default function UseCalcRating(rate: number) {
+export default function UseCalcRating(rate: number | null) {
+  if (!rate) {
+    return
+  }
+
   const stars = []
 
   for (let i = 1; i < 6; i++) {

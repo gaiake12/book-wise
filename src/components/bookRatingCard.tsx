@@ -1,39 +1,64 @@
-import rocketIcon from '@/../../assets/github-icon.svg'
-import oHobbit from '@/../../assets/o-hobbit.png'
 import Image from 'next/image'
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale/pt-BR'
 
-import { Star } from 'phosphor-react'
+import UseCalcRating from '@/hooks/useCalcRating'
 
-export default function BookRatingCard() {
+interface User {
+  id: string
+  name: string
+  avatarUrl: string
+}
+
+interface Book {
+  name: string
+  author: string
+  summary: string
+  coverUrl: string
+}
+
+interface BookRatingCardProps {
+  rating: {
+    id: string
+    rate: number
+    createdAt: string
+    book: Book
+    user: User
+  }
+}
+
+export default function BookRatingCard({ rating }: BookRatingCardProps) {
+  const { rate, createdAt, book, user } = rating
+
   return (
     <div className="w-[42.5rem] h-fit p-6 bg-gray-700 rounded-md">
       <header className="flex gap-4 w-full h-12 justify-between">
         <div className="flex gap-4 items-start justify-center">
           <Image
             className="rounded-full"
-            src={rocketIcon}
+            src={user?.avatarUrl}
             width={40}
             height={40}
             alt="Profile Image"
           />
 
           <div>
-            <span className="text-gray-100">Jaxson Dias</span>
-            <p className="text-gray-400 text-sm">Hoje</p>
+            <span className="text-gray-100">{user?.name}</span>
+            <p className="text-gray-400 text-sm">
+              {formatDistanceToNow(new Date(createdAt), {
+                locale: ptBR,
+              })}
+            </p>
           </div>
         </div>
-        <div className="flex gap-1">
-          <Star className="text-purple-100" />
-          <Star className="text-purple-100" />
-          <Star className="text-purple-100" />
-          <Star className="text-purple-100" />
-          <Star className="text-purple-100" />
+        <div className="flex gap-1 text-purple-100">
+          {UseCalcRating(rate || null)}
         </div>
       </header>
 
       <div className="flex mt-6 gap-5">
         <Image
-          src={oHobbit}
+          src={book.coverUrl}
           width={108}
           height={152}
           className=""
@@ -41,15 +66,10 @@ export default function BookRatingCard() {
         />
 
         <div className="flex flex-col">
-          <h1 className="text-gray-100 font-bold">O Hobbit</h1>
-          <span className="text-gray-400 text-sm">J.R.R. Tolkien</span>
+          <h1 className="text-gray-100 font-bold">{book.name}</h1>
+          <span className="text-gray-400 text-sm">{book.author}</span>
 
-          <p className="mt-5 text-gray-300">
-            Semper et sapien proin vitae nisi. Feugiat neque integer donec et
-            aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo
-            a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed
-            vulputate massa velit nibh
-          </p>
+          <p className="mt-5 text-gray-300">{book.summary}</p>
         </div>
       </div>
     </div>
