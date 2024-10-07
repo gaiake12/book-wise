@@ -1,39 +1,45 @@
 import Image from 'next/image'
-import { Star } from 'phosphor-react'
-import profileImage from '@/../assets/profile-image.jpg'
+import { formatDistanceToNow } from 'date-fns'
+import UseCalcRating from '@/hooks/useCalcRating'
 
-export function RatingCard() {
+interface Rating {
+  rate: number
+  description: string
+  createdAt: string
+  userName: string
+  userAvatarUrl: string
+}
+
+export function RatingCard({
+  rate,
+  description,
+  createdAt,
+  userName,
+  userAvatarUrl,
+}: Rating) {
   return (
     <div className="w-full h-fit min-h-36 p-6 bg-gray-700 rounded-md">
       <header className="flex gap-4 w-full h-12 justify-between">
         <div className="flex gap-4 items-start justify-center">
           <Image
             className="rounded-full"
-            src={profileImage}
+            src={userAvatarUrl}
             width={40}
             height={40}
             alt="Profile Image"
           />
 
           <div>
-            <span className="text-gray-100">Jaxson Dias</span>
-            <p className="text-gray-400 text-sm">Hoje</p>
+            <span className="text-gray-100">{userName}</span>
+            <p className="text-gray-400 text-sm">
+              {formatDistanceToNow(new Date(createdAt))}
+            </p>
           </div>
         </div>
-        <div className="flex gap-1">
-          <Star className="text-purple-100" weight="fill" />
-          <Star className="text-purple-100" weight="fill" />
-          <Star className="text-purple-100" weight="fill" />
-          <Star className="text-purple-100" weight="fill" />
-          <Star className="text-purple-100" />
-        </div>
+        <div className="flex gap-1 text-purple-100">{UseCalcRating(rate)}</div>
       </header>
 
-      <p className="mt-5 text-sm text-gray-300">
-        Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis.
-        Penatibus id vestibulum imperdiet a at imperdiet lectus leo. Sit porta
-        eget nec vitae sit vulputate eget
-      </p>
+      <p className="mt-5 text-sm text-gray-300">{description}</p>
     </div>
   )
 }

@@ -1,15 +1,15 @@
 import Image from 'next/image'
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
-import { Star } from 'phosphor-react'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from './ui/sheet'
 import { BookDetailCard } from './bookDetailCard'
-import { RatingCard } from './ratingCard'
-import { Dialog, DialogTrigger } from './ui/dialog'
-import { LoginAlert } from './loginAlert'
 import UseCalcAverageRating from '@/hooks/useCalcAvarageRating'
 
 interface Rating {
+  id: string
   rate: number
   description: string
+  createdAt: string
+  userName: string
+  userAvatarUrl: string
 }
 
 interface BookRatingExploreCardProps {
@@ -46,23 +46,8 @@ export default function BookRatingExploreCard({
       </SheetTrigger>
 
       <SheetContent className="bg-gray-800 max-w-[41.25rem] border-none overflow-y-auto px-12">
+        <SheetTitle about="Book Detail Card" />
         <BookDetailCard bookId={id} />
-
-        <div className="flex w-full justify-between items-center mt-10 text-gray-200">
-          <span>Avaliações</span>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="text-purple-100 font-semibold">Avaliar</button>
-            </DialogTrigger>
-            <LoginAlert />
-          </Dialog>
-        </div>
-
-        <div className="flex flex-col w-full h-fit mt-4 gap-3">
-          <RatingCard />
-          <RatingCard />
-          <RatingCard />
-        </div>
       </SheetContent>
     </Sheet>
   )

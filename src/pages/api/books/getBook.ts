@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/lib/prisma'
-import { categories } from '../../../../prisma/constants/categories'
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,7 +16,12 @@ export default async function handler(
       id: bookId,
     },
     include: {
-      ratings: true,
+      ratings: {
+        include: {
+          user: true,
+        },
+      },
+
       categories: {
         include: {
           category: true,
@@ -30,10 +34,19 @@ export default async function handler(
     return res.status(400).end()
   }
 
-  return res.status(200).json({
+  const response = {
     primaryCategory: book.categories[0].category.name,
     secondaryCategory: book.categories[1].category.name,
-    ratings: book.ratings,
+    ratings: book.ratings.map((rating) => {
+      return {
+        id: rating.id,
+        rate: rating.rate,
+        description: rating.description,
+        createdAt: rating.created_at,
+        userName: rating.user.name,
+        userAvatarUrl: rating.user.avatar_url,
+      }
+    }),
 
     id: book.id,
     author: book.author,
@@ -41,5 +54,7 @@ export default async function handler(
     name: book.name,
     totalPages: book.total_pages,
     summary: book.summary,
-  })
+  }
+
+  return res.status(200).json(response)
 }

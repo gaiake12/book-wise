@@ -5,7 +5,11 @@ interface Rating {
   description: string
 }
 
-export default function UseCalcAverageRating(ratings: Rating[]) {
+export default function UseCalcAverageRating(ratings: Rating[] | null) {
+  if (ratings === null) {
+    return
+  }
+
   const avarageRating = Math.floor(
     ratings.reduce((acc, rating) => acc + rating.rate, 0) / ratings.length,
   )

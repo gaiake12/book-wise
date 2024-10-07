@@ -6,8 +6,12 @@ import { api } from '@/lib/axios'
 import { useEffect, useState } from 'react'
 
 interface Rating {
+  id: string
   rate: number
   description: string
+  createdAt: string
+  userName: string
+  userAvatarUrl: string
 }
 
 interface Book {
