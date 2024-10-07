@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale/pt-BR'
 import UseCalcRating from '@/hooks/useCalcRating'
 
 interface Rating {
@@ -32,7 +33,7 @@ export function RatingCard({
           <div>
             <span className="text-gray-100">{userName}</span>
             <p className="text-gray-400 text-sm">
-              {formatDistanceToNow(new Date(createdAt))}
+              Há {formatDistanceToNow(new Date(createdAt), { locale: ptBR })}
             </p>
           </div>
         </div>

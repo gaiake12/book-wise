@@ -35,7 +35,7 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
 
   useEffect(() => {
     api
-      .get('/books/getBook', {
+      .get('/books/getBookById', {
         params: { bookId },
       })
       .then((response) => {
