@@ -35,7 +35,7 @@ export default function BookRatingCard({ rating }: BookRatingCardProps) {
       <header className="flex gap-4 w-full h-12 justify-between">
         <div className="flex gap-4 items-start justify-center">
           <Image
-            className="rounded-full"
+            className="rounded-full w-10 h-10 object-cover"
             src={user?.avatarUrl}
             width={40}
             height={40}
