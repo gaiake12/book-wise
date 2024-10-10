@@ -1,36 +1,58 @@
 import oHobbit from '@/../../assets/o-hobbit.png'
 import Image from 'next/image'
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale/pt-BR'
 
 import { Star } from 'phosphor-react'
+import UseCalcRating from '@/hooks/useCalcRating'
 
-export default function BookRatingCardProfile() {
+interface Book {
+  name: string
+  author: string
+  coverUrl: string
+}
+
+interface Rating {
+  rate: number
+  description: string
+  createdAt: string
+  book: Book
+}
+
+interface BookRatingCardProfileProps {
+  rating: Rating
+}
+
+export default function BookRatingCardProfile({
+  rating,
+}: BookRatingCardProfileProps) {
+  const { rate, description, createdAt, book } = rating
+
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-gray-400">Há 2 dias</span>
+      <span className="text-gray-400">
+        {formatDistanceToNow(new Date(createdAt), {
+          locale: ptBR,
+        })}
+      </span>
       <div className="w-[42.5rem] h-fit p-6 bg-gray-700 rounded-md">
         <div className="flex flex-col gap-5 p-4">
           <div className="flex gap-6">
-            <Image src={oHobbit} width={98} height={134} alt="book Image" />
+            <Image
+              src={book.coverUrl || ''}
+              width={98}
+              height={134}
+              alt="book Image"
+            />
 
             <div className="flex flex-col">
-              <h1 className="text-gray-100 font-bold">O Hobbit</h1>
-              <span className="text-gray-400 text-sm">J.R.R. Tolkien</span>
+              <h1 className="text-gray-100 font-bold">{book.name}</h1>
+              <span className="text-gray-400 text-sm">{book.author}</span>
 
-              <div className="flex gap-1 mt-auto">
-                <Star className="text-purple-100" weight="fill" />
-                <Star className="text-purple-100" />
-                <Star className="text-purple-100" />
-                <Star className="text-purple-100" />
-                <Star className="text-purple-100" />
-              </div>
+              <div className="flex gap-1 mt-auto">{UseCalcRating(rate)}</div>
             </div>
           </div>
-          <p className="mt-5 text-gray-300">
-            Semper et sapien proin vitae nisi. Feugiat neque integer donec et
-            aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo
-            a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed
-            vulputate massa velit nibh
-          </p>
+          <p className="mt-5 text-gray-300">{description}</p>
         </div>
       </div>
     </div>

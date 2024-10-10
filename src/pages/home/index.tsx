@@ -27,13 +27,31 @@ interface Rating {
   user: User
 }
 
+interface RatingMostPopularBook {
+  id: string
+  rate: number
+}
+
+interface MostPopularBook {
+  id: string
+  name: string
+  coverUrl: string
+  ratings: RatingMostPopularBook[]
+  author: string
+}
+
 export default function Home() {
   const [mostRecentRatings, setMostRecentRatings] = useState<Rating[]>()
+  const [popularBooks, setPopularBooks] = useState<MostPopularBook[]>()
 
   useEffect(() => {
     api.get('/rating/getMostRecentRatings').then((response) => {
       console.log(response.data)
       setMostRecentRatings(response.data)
+    })
+
+    api.get('/books/getPopularBooks').then((response) => {
+      setPopularBooks(response.data)
     })
   }, [])
 
@@ -70,10 +88,9 @@ export default function Home() {
         </header>
 
         <div className="flex flex-col gap-3">
-          <BookRatingSmallCard />
-          <BookRatingSmallCard />
-          <BookRatingSmallCard />
-          <BookRatingSmallCard />
+          {popularBooks?.map((book) => {
+            return <BookRatingSmallCard key={book.id} book={book} />
+          })}
         </div>
       </div>
     </div>

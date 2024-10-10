@@ -2,7 +2,6 @@ import { Star } from 'phosphor-react'
 
 interface Rating {
   rate: number
-  description: string
 }
 
 export default function UseCalcAverageRating(ratings: Rating[] | null) {
