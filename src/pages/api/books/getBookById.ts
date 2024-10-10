@@ -43,8 +43,12 @@ export default async function handler(
         rate: rating.rate,
         description: rating.description,
         createdAt: rating.created_at,
-        userName: rating.user.name,
-        userAvatarUrl: rating.user.avatar_url,
+
+        user: {
+          id: rating.user.id,
+          name: rating.user.name,
+          avatarUrl: rating.user.avatar_url,
+        },
       }
     }),
 

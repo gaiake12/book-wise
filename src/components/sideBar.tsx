@@ -61,7 +61,7 @@ export default function SideBar({ activePage }: SideBarProps) {
             )}
             {isSignedIn && (
               <Link
-                href="/profile"
+                href={`/profile?userId=${session?.user.id}`}
                 className="flex justify-start items-center gap-2"
               >
                 <User size={32} />

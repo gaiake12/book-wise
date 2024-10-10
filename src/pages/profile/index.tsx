@@ -1,6 +1,5 @@
 import BookRatingCardProfile from '@/components/bookRatingCardProfile'
 import SideBar from '@/components/sideBar'
-import profileImage from '@/../../assets/profile-image.jpg'
 import Image from 'next/image'
 import {
   User,
@@ -10,24 +9,24 @@ import {
   UserList,
   BookmarkSimple,
 } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useDeferredValue, useEffect, useState } from 'react'
 import { api } from '@/lib/axios'
-import { useSession } from 'next-auth/react'
-import { formatDistance, formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
+import { useRouter } from 'next/router'
 
 interface Book {
   name: string
   author: string
   coverUrl: string
   totalPages: number
-  primaryCategory: string
-  secondaryCategory: string
+  primaryCategory: string | null
+  secondaryCategory: string | null
 }
 
 interface User {
   name: string
-  avataUrl: string
+  avatarUrl: string
   createdAt: string
 }
 
@@ -40,32 +39,75 @@ interface Rating {
 }
 
 export default function Profile() {
-  const [ratings, setRatings] = useState<Rating[]>()
+  const [ratings, setRatings] = useState<Rating[]>([])
   const [user, setUser] = useState<User>()
 
-  const { data } = useSession()
+  const [searchText, setSearchText] = useState('')
+  const searchedText = useDeferredValue(searchText)
+
+  const router = useRouter()
+  const userId = router.query.userId
+
+  function handleSearchText(e: ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value
+
+    setSearchText(value)
+  }
 
   useEffect(() => {
-    if (data) {
+    if (searchedText !== '') {
       api
-        .get('/rating/getRecentRatedBooks', {
-          params: { userId: data.user.id },
+        .get('/rating/getRecentRatedBooksBySearch', {
+          params: { searchedText },
         })
         .then((response) => {
-          console.log(response.data)
+          setRatings(response.data)
+        })
+    } else {
+      api
+        .get('/rating/getRecentRatedBooks', {
+          params: { userId },
+        })
+        .then((response) => {
+          setRatings(response.data)
+        })
+    }
+  }, [searchedText])
+
+  useEffect(() => {
+    if (userId) {
+      api
+        .get('/rating/getRecentRatedBooks', {
+          params: { userId },
+        })
+        .then((response) => {
           setRatings(response.data)
         })
 
       api
         .get('/user/getUserById', {
-          params: { userId: data.user.id },
+          params: { userId },
         })
         .then((response) => {
-          console.log(response.data)
           setUser(response.data)
         })
     }
-  }, [data?.user.id, data])
+  }, [userId])
+
+  function countReadedAuthors(authors: string[]) {
+    const readedAuthors = new Set(authors).size
+
+    return readedAuthors
+  }
+
+  function countAllPagesReaded(totalPages: number[]) {
+    const totalReadedPages = totalPages.reduce(
+      (acc, totalPage) => acc + totalPage,
+      0,
+    )
+
+    return totalReadedPages
+  }
 
   return (
     <div className="flex">
@@ -82,6 +124,8 @@ export default function Profile() {
             type="Text"
             placeholder="Buscar livro avaliado"
             className="text-gray-100  flex w-full bg-gray-800 h-full placeholder:text-gray-400 outline-none"
+            value={searchText}
+            onChange={handleSearchText}
           />
 
           <MagnifyingGlass size={20} className="text-gray-500" />
@@ -99,7 +143,7 @@ export default function Profile() {
           <div className=" h-[4.5rem] w-[4.5rem] rounded-full bg-gradient-to-t from-gradient-from to-gradient-to flex justify-center items-center mb-4">
             <Image
               className="rounded-full "
-              src={user?.avataUrl || ''}
+              src={user ? user.avatarUrl : ''}
               width={68}
               height={68}
               alt="Profile Picture"
@@ -110,8 +154,9 @@ export default function Profile() {
             {user ? user.name : ''}
           </h1>
           <span className="text-gray-400 text-sm">
+            Há{' '}
             {user
-              ? formatDistanceToNow(new Date(user?.createdAt), {
+              ? formatDistanceToNow(new Date(user.createdAt), {
                   locale: ptBR,
                 })
               : ''}
@@ -123,7 +168,11 @@ export default function Profile() {
           <div className="w-48 h-fit flex gap-5 text-gray-100 items-center">
             <BookOpen size={32} className="text-green-100" />
             <div className="flex flex-col ">
-              <span className="font-semibold">3853</span>
+              <span className="font-semibold">
+                {countAllPagesReaded(
+                  ratings.map((rating) => rating.book.totalPages),
+                )}
+              </span>
               <p className="text-sm text-gray-400">Páginas lidas</p>
             </div>
           </div>
@@ -137,7 +186,12 @@ export default function Profile() {
           <div className="w-48 h-fit flex gap-5 text-gray-100 items-center ">
             <UserList size={32} className="text-green-100" />
             <div className="flex flex-col ">
-              <span className="font-semibold">8</span>
+              <span className="font-semibold">
+                {ratings &&
+                  countReadedAuthors(
+                    ratings.map((rating) => rating.book.author),
+                  )}
+              </span>
               <p className="text-sm text-gray-400">Autores lidos</p>
             </div>
           </div>

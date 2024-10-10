@@ -3,6 +3,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
 import UseCalcRating from '@/hooks/useCalcRating'
+import Link from 'next/link'
 
 interface User {
   id: string
@@ -34,13 +35,15 @@ export default function BookRatingCard({ rating }: BookRatingCardProps) {
     <div className="w-[42.5rem] h-fit p-6 bg-gray-700 rounded-md">
       <header className="flex gap-4 w-full h-12 justify-between">
         <div className="flex gap-4 items-start justify-center">
-          <Image
-            className="rounded-full w-10 h-10 object-cover"
-            src={user?.avatarUrl}
-            width={40}
-            height={40}
-            alt="Profile Image"
-          />
+          <Link href={`profile?userId=${user.id}`}>
+            <Image
+              className="rounded-full w-10 h-10 object-cover"
+              src={user?.avatarUrl}
+              width={40}
+              height={40}
+              alt="Profile Image"
+            />
+          </Link>
 
           <div>
             <span className="text-gray-100">{user?.name}</span>

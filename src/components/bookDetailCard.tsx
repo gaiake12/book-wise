@@ -13,13 +13,18 @@ interface BookDetailCardProps {
   bookId: string
 }
 
+interface User {
+  id: string
+  name: string
+  avatarUrl: string
+}
+
 interface Rating {
   id: string
   rate: number
   description: string
   createdAt: string
-  userName: string
-  userAvatarUrl: string
+  user: User
 }
 
 interface Book {
@@ -73,8 +78,6 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
   function handleCreateNewRating(data: RatingFormData) {
     const { description } = data
 
-    console.log(rate, description, session?.user.id, bookId)
-
     api
       .post('/rating/createNewRating', {
         rate,
@@ -83,6 +86,14 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
         bookId,
       })
       .then()
+
+    api
+      .get('/books/getBookById', {
+        params: { bookId },
+      })
+      .then((response) => {
+        setBook(response.data)
+      })
 
     handleCancelForm()
   }
@@ -241,8 +252,7 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
               createdAt={rating.createdAt}
               rate={rating.rate}
               description={rating.description}
-              userName={rating.userName}
-              userAvatarUrl={rating.userAvatarUrl}
+              user={rating.user}
             />
           )
         })}
