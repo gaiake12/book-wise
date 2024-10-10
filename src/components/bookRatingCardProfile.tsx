@@ -49,7 +49,9 @@ export default function BookRatingCardProfile({
               <h1 className="text-gray-100 font-bold">{book.name}</h1>
               <span className="text-gray-400 text-sm">{book.author}</span>
 
-              <div className="flex gap-1 mt-auto">{UseCalcRating(rate)}</div>
+              <div className="flex gap-1 mt-auto text-purple-100">
+                {UseCalcRating(rate)}
+              </div>
             </div>
           </div>
           <p className="mt-5 text-gray-300">{description}</p>
