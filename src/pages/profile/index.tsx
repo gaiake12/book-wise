@@ -20,8 +20,7 @@ interface Book {
   author: string
   coverUrl: string
   totalPages: number
-  primaryCategory: string | null
-  secondaryCategory: string | null
+  primaryCategory: string
 }
 
 interface User {
@@ -107,6 +106,27 @@ export default function Profile() {
     )
 
     return totalReadedPages
+  }
+
+  function setMostReadedCategory(readedCategories: string[]) {
+    const hashMapCategories: Record<string, number> = readedCategories.reduce<
+      Record<string, number>
+    >((acc, category) => {
+      acc[category] = (acc[category] || 0) + 1
+      return acc
+    }, {})
+
+    const mostRepeatedValue = Math.max(...Object.values(hashMapCategories))
+
+    const mostReadedCategory = Object.entries(hashMapCategories).find(
+      ([_, repeatedTimes]) => repeatedTimes === mostRepeatedValue,
+    )
+
+    if (!mostReadedCategory) {
+      return null
+    }
+
+    return mostReadedCategory[0]
   }
 
   return (
@@ -198,7 +218,12 @@ export default function Profile() {
           <div className="w-48 h-fit flex gap-5 text-gray-100 items-center ">
             <BookmarkSimple size={32} className="text-green-100" />
             <div className="flex flex-col ">
-              <span className="font-semibold">Computação</span>
+              <span className="font-semibold">
+                {ratings &&
+                  setMostReadedCategory(
+                    ratings.map((rating) => rating.book.primaryCategory),
+                  )}
+              </span>
               <p className="text-sm text-gray-400">Categoria mais lida</p>
             </div>
           </div>

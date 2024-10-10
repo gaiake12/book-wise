@@ -1,9 +1,7 @@
-import oHobbit from '@/../../assets/o-hobbit.png'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
-import { Star } from 'phosphor-react'
 import UseCalcRating from '@/hooks/useCalcRating'
 
 interface Book {

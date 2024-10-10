@@ -51,8 +51,7 @@ export default async function handler(
         author: rating.book.author,
         coverUrl: rating.book.cover_url,
         totalPages: rating.book.total_pages,
-        primaryCategory: rating.book.categories[0].category,
-        secondaryCategory: rating.book.categories[1].category,
+        primaryCategory: rating.book.categories[0].category.name,
       },
     }
   })
