@@ -29,6 +29,7 @@ export default function BookRatingCardProfile({
   return (
     <div className="flex flex-col gap-2">
       <span className="text-gray-400">
+        Há{' '}
         {formatDistanceToNow(new Date(createdAt), {
           locale: ptBR,
         })}

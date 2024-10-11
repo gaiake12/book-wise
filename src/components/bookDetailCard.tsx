@@ -40,7 +40,7 @@ interface Book {
 }
 
 const ratingFormSchema = z.object({
-  description: z.string().min(50, {
+  description: z.string().min(25, {
     message: 'A descrição da avaliação deve ter ao menos 100 caracteres',
   }),
 })
@@ -75,7 +75,7 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
       })
   }, [bookId])
 
-  function handleCreateNewRating(data: RatingFormData) {
+  async function handleCreateNewRating(data: RatingFormData) {
     const { description } = data
 
     api
@@ -85,14 +85,12 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
         userId: session?.user.id,
         bookId,
       })
-      .then()
-
-    api
-      .get('/books/getBookById', {
-        params: { bookId },
-      })
       .then((response) => {
-        setBook(response.data)
+        const newRating = response.data
+
+        if (book && book.ratings) {
+          setBook({ ...book, ratings: [newRating, ...book.ratings] })
+        }
       })
 
     handleCancelForm()
@@ -153,8 +151,7 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
       </div>
       <div className="flex w-full justify-between items-center mt-10 text-gray-200">
         <span>Avaliações</span>
-        {/* <Dialog>
-          <DialogTrigger asChild> */}
+
         {!showRatingBox && isSignedIn && (
           <button
             onClick={() => setShowRatingBox(true)}
@@ -163,10 +160,6 @@ export function BookDetailCard({ bookId }: BookDetailCardProps) {
             Avaliar
           </button>
         )}
-
-        {/* </DialogTrigger>
-          <LoginAlert />
-        </Dialog> */}
       </div>
 
       {showRatingBox && (

@@ -174,12 +174,7 @@ export default function Profile() {
             {user ? user.name : ''}
           </h1>
           <span className="text-gray-400 text-sm">
-            Há{' '}
-            {user
-              ? formatDistanceToNow(new Date(user.createdAt), {
-                  locale: ptBR,
-                })
-              : ''}
+            Desde {user ? new Date(user.createdAt).getFullYear() : ''}
           </span>
         </div>
         <div className="h-1 w-8 bg-gradient-to-r from-gradient-from to-gradient-to my-8 rounded-lg" />
