@@ -2,6 +2,7 @@ import NextAuth from 'next-auth'
 import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
 import GitHubProvier, { GithubProfile } from 'next-auth/providers/github'
 import { PrismaAdapter } from '@/lib/auth/prisma-adapter'
+import { redirect } from 'next/dist/server/api-utils'
 
 export const authOptions = {
   adapter: PrismaAdapter(),

@@ -3,16 +3,22 @@ import bookWisePresentation from '../../../assets/book-wise-presentation.png'
 import googleIcon from '@/../../assets/google-icon.svg'
 import githubIcon from '@/../../assets/github-icon.svg'
 import rocketIcon from '@/../../assets/rocket-icon.svg'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 export default function Login() {
   const router = useRouter()
+  const { data: session } = useSession()
+
+  useEffect(() => {
+    if (session) {
+      router.push('/home')
+    }
+  }, [session, router])
 
   async function handleLogIn(type: string) {
     await signIn(type)
-
-    router.push('/home')
   }
 
   return (
